@@ -1,20 +1,25 @@
 module latch_test;
 
-reg i,r;
+reg d,clk,r;
 wire o;
 
-rs_latch uut(i,r,o);
+d_flipflop uut(d,clk,r,o);
 
 initial begin
-    $dumpfile("latch.vcd");
+    d = 0;
+    clk = 0;
+    r = 1;
+    #1 r = 0;
+end
+always #2 clk = !clk;
+initial begin
+    $dumpfile("output.vcd");
     $dumpvars(0,latch_test);
-    i = 0; r = 1;
-    #1 r = 0;
-    #1 i = 1;
-    #1 i = 0;
-    #4 r = 1;
-    #1 r = 0;
-    #3
+    #1 d = 1;
+    #1 d = 0;
+    #5 d = 1;
+    #3 d = 0;
+    #2
     $finish();
 end
 
